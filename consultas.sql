@@ -25,4 +25,4 @@ WHERE d.dept_id = e.dept_id AND superior_emp_id IS NOT NULL;
 
 SELECT CONCAT(fname, ' ', lname) NOME
 FROM customer
-WHERE lname REGEXP '[^ry]$';
+WHERE lname REGEXP '[^ry]$';   WHERE lname NOT LIKE '%r' AND lname NOT LIKE '%y';
