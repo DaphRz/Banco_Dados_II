@@ -23,6 +23,6 @@ SELECT CONCAT(fname,' ', lname) NOME, name DEPARTAMENTO
 FROM employee e, department d
 WHERE d.dept_id = e.dept_id AND superior_emp_id IS NOT NULL;
 
-SELECT lname
+SELECT CONCAT(fname, ' ', lname) NOME
 FROM customer
-WHERE lname 
+WHERE lname REGEXP '[^ry]$';
