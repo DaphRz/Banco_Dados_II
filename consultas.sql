@@ -60,3 +60,8 @@ FROM individual i, (SELECT cust_id, MIN(birth_date) MIN
                  GROUP BY cust_id) DATA, customer c
 WHERE i.birth_date = DATA.MIN AND i.cust_id = DATA.cust_id
 ORDER BY birth_date; */
+
+# Exercício 6
+SELECT name
+FROM product
+ORDER BY SUBSTRING_INDEX(name, ' ', -1);
