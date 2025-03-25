@@ -65,3 +65,41 @@ ORDER BY birth_date; */
 SELECT name
 FROM product
 ORDER BY SUBSTRING_INDEX(name, ' ', -1);
+
+
+# União, Interseção e Diferença
+
+# Exercício 1
+SELECT fname, lname
+FROM individual
+UNION
+SELECT fname, lname
+FROM employee;
+
+# Exercício 2 - Projeto (2,4)
+SELECT name NOME
+FROM business
+UNION
+SELECT CONCAT(fname, ' ', lname)
+FROM individual;
+
+# Exercício 3
+SELECT emp_id
+FROM employee
+INTERSECT 
+SELECT superior_emp_id
+FROM employee;
+
+# Exercício 4 - SQL Lite Online
+SELECT city
+FROM customer c
+EXCEPT 
+SELECT city
+from branch;
+
+# Exercício 5 - SQL Lite Online
+SELECT emp_id
+FROM employee
+EXCEPT 
+SELECT superior_emp_id
+from employee;
