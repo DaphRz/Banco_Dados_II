@@ -1,32 +1,105 @@
-USE bank_si3n;
-
-# Junções
-
-# 01
-SELECT fname, lname, branch_id, name
-FROM employee JOIN branch
-ON assigned_branch_id = branch_id;
-
-# 02
-SELECT emp_id, fname, lname, name department
-FROM employee JOIN department
-USING(dept_id)
-ORDER BY emp_id; 
-
-# 03
-SELECT account_id
-FROM account, employee WHERE CONCAT(fname, ' ', lname) = 'Michael Smith'
-AND open_date > start_date ;
-
-# 03.1
-SELECT account_id, CONCAT(i.fname, ' ', i.lname) name
-FROM account 
-JOIN employee e ON open_date > start_date
-JOIN individual i USING(cust_id)
-WHERE CONCAT(e.fname, ' ', e.lname) = 'Michael Smith';
-
-# 04
-SELECT name branch, CONCAT(fname, ' ', lname) name
-FROM branch b JOIN customer c
-ON b.city != c.city
-JOIN individual USING(cust_id);
+ USE bank_cc3mc;
+ 
+ # ? 
+ SELECT fname NOME, lname SOBRENOME, name EMPRESA  # não precisa de f. e b. pois não há ambiguidade
+ FROM officer f, business b
+ WHERE f.cust_id = b.cust_id;
+ 
+ SELECT account_id, cust_id, avail_balance
+ FROM account
+ WHERE status = 'ACTIVE'
+ AND avail_balance > 2500;
+ 
+ SELECT account_id, city, CONCAT(fname,' ', lname) NOME, ac.cust_id, avail_balance
+ FROM account ac, customer c, individual i
+ WHERE status = 'ACTIVE' AND avail_balance > 2500
+ AND ac.cust_id = c.cust_id AND c.cust_id = i.cust_id;
+ 
+ SELECT CONCAT(fname,' ', lname) NOME
+ FROM employee
+ WHERE superior_emp_id IS NULL;
+ 
+ SELECT CONCAT(fname,' ', lname) NOME, name DEPARTAMENTO
+ FROM employee e, department d
+ WHERE d.dept_id = e.dept_id AND superior_emp_id IS NOT NULL;
+ 
+ # Exercício 3
+ SELECT CONCAT(fname, ' ', lname) NOME
+ FROM individual
+ WHERE lname REGEXP '[^ry]$';   # WHERE lname NOT LIKE '%r' AND lname NOT LIKE '%y';
+ 
+ # Exercício 4 - a
+ SELECT dept_id, fname, lname, MIN(start_date)
+ FROM employee
+ GROUP BY dept_id;
+ 
+ # Exercício 4 - b
+ SELECT CONCAT(fname, ' ',lname) NOME, DATA.POSSE, e.dept_id
+ FROM employee e, (SELECT dept_id, MIN(start_date) POSSE
+ 			     FROM employee
+                  GROUP BY dept_id) DATA
+ WHERE e.start_date = DATA.POSSE AND e.dept_id = DATA.dept_id;
+ # GROUP BY e.dept_id; - ordem CRESC
+ 
+ # Exercício 5
+ SELECT 
+ 	CONCAT(fname, ' ',lname) NOME, 
+ 	DATA.MIN, 
+     city
+ FROM customer c, individual i, 
+ 								(SELECT cust_id, MIN(birth_date) MIN
+ 								FROM individual
+ 								GROUP BY cust_id) DATA
+ WHERE i.birth_date = DATA.MIN AND i.cust_id = DATA.cust_id
+ GROUP BY city;
+ 
+ # Exercício 5
+ /* SELECT CONCAT(fname, ' ',lname) NOME, MIN(birth_date), city
+ FROM individual i, (SELECT cust_id, MIN(birth_date) MIN
+ 			     FROM individual i
+                  GROUP BY cust_id) DATA, customer c
+ WHERE i.birth_date = DATA.MIN AND i.cust_id = DATA.cust_id
+ ORDER BY birth_date; */
+ 
+ # Exercício 6
+ SELECT name
+ FROM product
+ ORDER BY SUBSTRING_INDEX(name, ' ', -1);
+ 
+ 
+ # União, Interseção e Diferença
+ 
+ # Exercício 1
+ SELECT fname, lname
+ FROM individual
+ UNION
+ SELECT fname, lname
+ FROM employee;
+ 
+ # Exercício 2 - Projeto (2,4)
+ SELECT name NOME
+ FROM business
+ UNION
+ SELECT CONCAT(fname, ' ', lname)
+ FROM individual;
+ 
+ # Exercício 3
+ SELECT emp_id
+ FROM employee
+ INTERSECT 
+ SELECT superior_emp_id
+ FROM employee;
+ 
+ # Exercício 4 - SQL Lite Online
+ SELECT city
+ FROM customer c
+ EXCEPT 
+ SELECT city
+ from branch;
+ 
+ # Exercício 5 - SQL Lite Online
+ SELECT emp_id
+ FROM employee
+ EXCEPT 
+ SELECT superior_emp_id
+ from employee;
