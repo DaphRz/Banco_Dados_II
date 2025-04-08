@@ -31,6 +31,7 @@ FROM branch b JOIN customer c
 ON b.city != c.city
 JOIN individual USING(cust_id);
 
+
 # Junções Internas
 
 SELECT account_id, name, fed_id, birth_date
@@ -49,3 +50,17 @@ WHERE e.dept_id != em.dept_id;
 SELECT fname, lname, b.name, city, avail_balance, p.name
 FROM officer NATURAL JOIN business b NATURAL JOIN customer NATURAL JOIN account
 JOIN product p USING (product_cd);
+
+
+# Junções Externas
+
+# Exercício 6
+SELECT pt.name name_type, p.name
+FROM product_type pt LEFT JOIN product p
+USING(product_type_cd);
+
+# Exercício 8
+SELECT CONCAT(e.fname, ' ', e.lname) name, e.emp_id, COUNT(emp.superior_emp_id)
+FROM employee e LEFT JOIN employee emp                                            -- CADA FUNCIONÁRIO (então eu pego os NULL também)
+ON e.emp_id = emp.superior_emp_id
+GROUP BY emp_id;
