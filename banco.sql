@@ -1,5 +1,5 @@
 CREATE SCHEMA bank_cc3mc;
-USE bank_cc3mc;;
+USE bank_cc3mc;
 
 /* begin table creation */
 
