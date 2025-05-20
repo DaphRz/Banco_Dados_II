@@ -147,3 +147,56 @@ WHERE account_id = 23;
 INSERT INTO transaction
 (txn_id ,txn_date, account_id, txn_type_cd, amount, funds_avail_date)
 VALUES (null,now(),23, 'DBT', 1600, now());
+
+# Exercício 9
+
+-- Crie gatilho disparando quando um novo employee é registrado.
+-- Se não tiver superior, vai colocar o chefe dele como o mais antigo.
+
+DELIMITER $$
+
+CREATE TRIGGER emp_sup 
+BEFORE INSERT ON employee
+FOR EACH ROW
+BEGIN
+	IF NEW.superior_emp_id IS NULL
+	THEN
+	SET NEW.superior_emp_id = (SELECT emp_id
+							   FROM employee
+							   ORDER BY start_date ASC
+                               LIMIT 1);
+	END IF;
+
+END $$
+
+DELIMITER ;
+
+INSERT INTO employee(fname,lname,start_date,dept_id)
+VALUES ('Daphne','Rocha',now(),1);
+
+SELECT emp_id,fname,lname,superior_emp_id,dept_id
+FROM employee ORDER BY 1 DESC LIMIT 1;
+
+# Exercício 10
+
+SHOW EVENTS;
+DROP EVENT rendimento;
+SELECT now();
+
+DELIMITER $$
+
+CREATE EVENT rendimento
+ON SCHEDULE AT '2025-05-20 09:07:30'
+DO
+BEGIN
+	UPDATE account
+    SET avail_balance = avail_balance * 1.01, last_activity_date = DATE(now()) 
+	WHERE product_cd = 'SAV';
+
+END $$
+
+DELIMITER ;
+
+SELECT account_id,product_cd,avail_balance,open_date,last_activity_date
+FROM account
+ORDER BY 1 ASC;
