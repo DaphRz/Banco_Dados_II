@@ -45,7 +45,7 @@
  SELECT 
  	CONCAT(fname, ' ',lname) NOME, 
  	DATA.MIN, 
-     city
+  city
  FROM customer c, individual i, 
  								(SELECT cust_id, MIN(birth_date) MIN
  								FROM individual
@@ -54,10 +54,16 @@
  GROUP BY city;
  
  # Exercício 5
- /* SELECT CONCAT(fname, ' ',lname) NOME, MIN(birth_date), city
- FROM individual i, (SELECT cust_id, MIN(birth_date) MIN
+ /* SELECT 
+   CONCAT(fname, ' ',lname) NOME, 
+   MIN(birth_date), 
+   city
+ FROM 
+   individual i, 
+         (SELECT cust_id, MIN(birth_date) MIN
  			     FROM individual i
-                  GROUP BY cust_id) DATA, customer c
+         GROUP BY cust_id) DATA, 
+   customer c
  WHERE i.birth_date = DATA.MIN AND i.cust_id = DATA.cust_id
  ORDER BY birth_date; */
  
