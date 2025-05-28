@@ -1,6 +1,7 @@
 USE bank;
 
 DELIMITER $$
+	
 CREATE PROCEDURE
 transferir (IN valor DECIMAL(7, 2), IN remetante INT, IN destinatario INT)
 BEGIN
@@ -17,17 +18,20 @@ UPDATE account
 SET avail_balance = avail_balance + valor, last_activity_date = now()
 WHERE account_id = destinatario;
 END $$
+	
 DELIMITER ;
 
--- ? CALL transferir(500.00,11,10);
--- ? SELECT account_id, avail_balance FROM account WHERE account_id IN (10,11);
+-- CALL transferir(500.00,11,10);
+-- SELECT account_id, avail_balance FROM account WHERE account_id IN (10,11);
 
 DELIMITER $$
+	
 CREATE PROCEDURE render (IN taxa DECIMAL(3,2))
 BEGIN
 UPDATE account
 SET avail_balance = avail_balance + avail_balance*0.01*taxa;
 END $$
+	
 DELIMITER ;
 
 -- terminar aqui em bx
