@@ -196,7 +196,7 @@ ON SCHEDULE AT '2025-05-20 09:07:30'
 DO
 BEGIN
 	UPDATE account
-    SET avail_balance = avail_balance * 1.01, last_activity_date = DATE(now()) 
+    	SET avail_balance = avail_balance * 1.01, last_activity_date = DATE(now()) 
 	WHERE product_cd = 'SAV';
 
 END $$
