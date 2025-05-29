@@ -101,12 +101,14 @@ CONSTRAINT pk_log_employee PRIMARY KEY (log_id)
 );
 
 DELIMITER $$
+	
 CREATE TRIGGER trg_emp_1 
 AFTER UPDATE ON employee 
 FOR EACH ROW
 BEGIN
 INSERT INTO log_employee_1(user, fname, lname, emp_id, old_sup, new_sup)
 VALUES(USER(), CONCAT(NEW.fname, " ",NEW.lname), NEW.emp_id, OLD.superior_emp_id,NEW.superior_emp_id);
+
 END $$
 
 UPDATE employee
